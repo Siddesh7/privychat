@@ -4,7 +4,7 @@ import {createPublicClient, http} from "viem";
 import {mainnet} from "viem/chains";
 import Redis from "ioredis";
 
-const redis = new Redis(process.env.REDIS_URL!);
+// const redis = new Redis(process.env.REDIS_URL!);
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -18,10 +18,10 @@ export async function GET(req: NextRequest) {
 
   try {
     // Check if the result is already in Redis
-    const cachedResult = await redis.get(address);
-    if (cachedResult) {
-      return NextResponse.json(JSON.parse(cachedResult));
-    }
+    // const cachedResult = await redis.get(address);
+    // if (cachedResult) {
+    //   return NextResponse.json(JSON.parse(cachedResult));
+    // }
 
     const publicClient = createPublicClient({
       chain: mainnet,
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
     ]);
     const names = [udName, ensName].filter(Boolean).flat();
 
-    if (names.length > 0) await redis.set(address, JSON.stringify(names));
+    // if (names.length > 0) await redis.set(address, JSON.stringify(names));
 
     return NextResponse.json(names);
   } catch (error) {
